@@ -1,0 +1,32 @@
+# Excluyo informacion del git
+.git
+.gitignore
+
+# Ignoro este archivo
+.dockerignore
+
+# Ignoro archivos de IDE y agentes de construccion
+.agents
+.codex
+.vscode
+
+# Ignoro archivos de construccion
+node_modules
+dist
+coverage
+
+# Ignoro archivos de configuracion local
+.env
+.env.*
+*.log
+
+# Ignoro archivo de documentacion
+README.md
+
+# Ignoro archivo para desplegar aplicacion en kubernetes
+entrega.yaml
+
+# Ignoro archivos para pipeline en Jenkins
+Jenkinsfile
+Jenkinsfile.k8
+agent-node.yaml
