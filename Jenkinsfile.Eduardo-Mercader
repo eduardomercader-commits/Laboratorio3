@@ -1,9 +1,9 @@
 def tagAndPush(String localImage, String repo, String user, String registry, String credential){
     withCredentials([string(credentialsId: ${credential}, variable: 'CR_PAT')]) {
 //    docker.withRegistry(registry, credential){
-        echo "repo: ${repo} - ${localImage} - ${user}"
+        sh 'echo "repo: ${repo} - ${localImage} - ${user}"'
         withEnv(["LOGIN=${registry} login -u ${user}"]) {
-           echo "login: ${LOGIN}"
+           sh 'echo "login: ${LOGIN}"'
            sh 'echo ${CR_PAT} | docker ${LOGIN} --password-stdin'
         }
         withEnv(["IMAGEN_LOCAL=${IMAGE_NAME}:${BUILD_NUMBER}", "IMAGE=${repo}${IMAGE_NAME}:${BUILD_NUMBER}"]) {
@@ -70,8 +70,8 @@ pipeline {
                     script{
 //                        tagAndPush("${IMAGE_NAME}:${BUILD_NUMBER}", "${DH_REPO}", 'https://index.docker.io/v1','dh-credential')
 //                        tagAndPush("${IMAGE_NAME}:${BUILD_NUMBER}", "${GH_REPO}", 'https://ghcr.io','gh-credential')
-                        tagAndPush("${IMAGE_NAME}:${BUILD_NUMBER}", "${DH_REPO}", "${DH_USER}", '','dh-credential')
-                        tagAndPush("${IMAGE_NAME}:${BUILD_NUMBER}", "${GH_REPO}", "${DH_USER}", 'ghcr.io','gh-credential')
+                        tagAndPush("${IMAGE_NAME}:${BUILD_NUMBER}", "${DH_REPO}", "${DH_USER}", ' ', 'dh-credential')
+                        tagAndPush("${IMAGE_NAME}:${BUILD_NUMBER}", "${GH_REPO}", "${GH_USER}", 'ghcr.io', 'gh-credential')
                     }
                 }
             }
