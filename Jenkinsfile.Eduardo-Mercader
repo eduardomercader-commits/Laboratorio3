@@ -1,15 +1,19 @@
-def tagAndPush(String localImage, String repo, String registry, String credential){
+def tagAndPush(String localImage, String repo, String user, String registry, String credential){
     docker.withRegistry(registry, credential){
         echo "repo: ${repo} - ${BUILD_NUMBER}"
-        def imagen = docker.image("${localImage}")
+        def imagen = docker.image("${localImage}:")
         imagen.tag("${BUILD_NUMBER}")
         imagen.tag("${APP_SEMANTIC_VERSION}")
-        withEnv(["TAG=${repo}:${BUILD_NUMBER}"]) {
+        withEnv(["TAG=${repo}:${BUILD_NUMBER}", "IMAGE=${repo}/${user}/${IMAGE_NAME}:${BUILD_NUMBER}"]) {
             echo "tag: ${TAG}"
+            echo "image: ${IMAGE}"
+            sh 'docker tag ${IMAGE} || true'
             sh 'docker rmi -f ${TAG} || true'
         }
-        withEnv(["TAG=${repo}:${APP_SEMANTIC_VERSION}"]) {
+        withEnv(["TAG=${repo}:${APP_SEMANTIC_VERSION}", "IMAGE=${repo}/${user}/${IMAGE_NAME}:${APP_SEMANTIC_VERSION}"]) {
             echo "tag: ${TAG}"
+            echo "image: ${IMAGE}"
+            sh 'docker tag ${IMAGE} || true'
             sh 'docker rmi -f ${TAG} || true'
         }
         imagen.push("${BUILD_NUMBER}")
@@ -28,6 +32,8 @@ pipeline {
         BUILD_NUMBER = '3.0.0'
         APP_SEMANTIC_VERSION = 'eduardo-mercader'
         IMAGE_NAME = 'tarea-final'
+        DH_USER = 'emercade'
+        GH_USER = 'eduardo-mercader-commits'
         DH_REPO = 'index.docker.io/v1/emercade/'
         GH_REPO = 'ghcr.io/eduardo-mercader-commits/'
         K8S_NAMESPACE = 'ns-eduardo-mercader'
@@ -67,8 +73,8 @@ pipeline {
             steps {
                 container('docker'){
                     script{
-                        tagAndPush("${IMAGE_NAME}:${BUILD_NUMBER}", "${DH_REPO}", 'https://index.docker.io/v1/','dh-credential')
-                        tagAndPush("${IMAGE_NAME}:${BUILD_NUMBER}", "${GH_REPO}", 'https://ghcr.io','gh-credential')
+                        tagAndPush("${IMAGE_NAME}:${BUILD_NUMBER}", "${DH_USER}", "${DH_REPO}", 'https://index.docker.io/v1/','dh-credential')
+                        tagAndPush("${IMAGE_NAME}:${BUILD_NUMBER}", "${GH_USER}", "${GH_REPO}", 'https://ghcr.io','gh-credential')
                     }
                 }
             }
