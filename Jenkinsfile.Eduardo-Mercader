@@ -5,14 +5,14 @@ def tagAndPush(String localImage, String repo, String user, String registry, Str
         imagen.tag("${BUILD_NUMBER}")
         imagen.tag("${APP_SEMANTIC_VERSION}")
         withEnv(["TAG=${repo}:${BUILD_NUMBER}", "IMAGE=${repo}/${user}/${IMAGE_NAME}:${BUILD_NUMBER}"]) {
-            echo "tag: ${TAG}"
-            echo "image: ${IMAGE}"
+            sh 'echo "tag: ${TAG}"'
+            sh 'echo "image: ${IMAGE}"'
             sh 'docker tag ${IMAGE} || true'
             sh 'docker rmi -f ${TAG} || true'
         }
         withEnv(["TAG=${repo}:${APP_SEMANTIC_VERSION}", "IMAGE=${repo}/${user}/${IMAGE_NAME}:${APP_SEMANTIC_VERSION}"]) {
-            echo "tag: ${TAG}"
-            echo "image: ${IMAGE}"
+            sh 'echo "tag: ${TAG}"'
+            sh 'echo "image: ${IMAGE}"'
             sh 'docker tag ${IMAGE} || true'
             sh 'docker rmi -f ${TAG} || true'
         }
