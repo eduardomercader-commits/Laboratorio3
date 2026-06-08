@@ -34,8 +34,6 @@ spec:
       volumeMounts:
         - name: docker-socket
           mountPath: /var/run/docker.sock
-        - name: minikube-certs
-          mountPath: /minikube/certs
       tty: true
       resources:
         requests:
@@ -115,6 +113,3 @@ spec:
     - name: docker-socket
       hostPath:
         path: /var/run/docker.sock
-    - name: minikube-certs
-      hostPath:
-        path: /home/emercade/.minikube/certs

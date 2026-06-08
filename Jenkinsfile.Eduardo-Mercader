@@ -19,14 +19,10 @@ pipeline {
     environment{
         BUILD_NUMBER = '3.0.0'
         APP_SEMANTIC_VERSION = 'eduardo-mercader'
-        IMAGE_NAME = 'tarea-final'
+        IMAGE_NAME = 'emercade/tarea-final'
         DH_REPO = 'emercade/tarea-final'
         GH_REPO = 'ghcr.io/eduardo-mercader-commits/tarea-final'
         K8S_NAMESPACE = 'ns-eduardo-mercader'
-        DOCKER_TLS_VERIFY="1"
-        DOCKER_HOST="tcp://192.168.49.2:2376"
-        DOCKER_CERT_PATH="/minikube/certs"
-        MINIKUBE_ACTIVE_DOCKERD="minikube"
     }
     stages{
         stage('install'){
@@ -49,7 +45,10 @@ pipeline {
         stage('build'){
             steps {
                 container('docker'){
-                    sh 'docker build -t ${IMAGE_NAME} .'
+                    script{
+                        withCredentials([(credentialsId: 'dh-credencial', variable: 'CR_PAT')]) {
+                    sh 'echo $CR_PAT | docker login -u emercade --password-stdin'
+                    sh 'docker build -t ${IMAGE_NAME}:${BUID_NUMBER} .'
                 }
             }
         }
