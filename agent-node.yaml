@@ -111,5 +111,5 @@ spec:
           - key: .dockerconfigjson
             path: config.json
     - name: docker-socket
-        hostPath:
-          path: /var/run/docker.sock
+      hostPath:
+        path: /var/run/docker.sock
