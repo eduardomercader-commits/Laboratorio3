@@ -44,14 +44,14 @@ pipeline {
         }
         stage('build'){
             steps {
-                container('herramientas'){
+                container('docker'){
                     sh 'docker build -t env.IMAGE_NAME .'
                 }
             }
         }
         stage('push'){
             steps {
-                container('buildkit'){
+                container('docker'){
                     script{
                         tagAndPush(env.IMAGE_NAME, env.DH_REPO, 'https://index.docker.io/v1/','dh-credencial' )
                         tagAndPush(env.IMAGE_NAME, env.GH_REPO, 'https://ghcr.io','gh-credencial' )
