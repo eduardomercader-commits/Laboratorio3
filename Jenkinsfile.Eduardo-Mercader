@@ -1,13 +1,21 @@
-def tagAndPush(String localImage, String repo, String user, String registry, String credential){
+def tagAndPush(String localImage, String user, String repo, String registry, String credential){
     docker.withRegistry(registry, credential){
         echo "repo: ${repo} - ${localImage}"
-//        def imagen = docker.image("${localImage}")
+        def imagen = docker.image("${localImage}")
 //        imagen.tag("${BUILD_NUMBER}")
 //        imagen.tag("${APP_SEMANTIC_VERSION}")
         withEnv(["TAG=:${BUILD_NUMBER}", "IMAGE=${repo}/${user}/${IMAGE_NAME}:${BUILD_NUMBER}"]) {
             sh 'echo tag ${TAG}'
             sh 'echo image ${IMAGE}'
             sh 'docker image ls'
+            sh 'docker rmi -f emercade/tarea-final:3.0.0 || true'
+            sh 'docker rmi -f emercade/tarea-final:eduardo-mercader || true'
+            sh 'docker rmi -f ghcr.io/eduardomercader-commits/tarea-final:3.0.0 || true'
+            sh 'docker rmi -f ghcr.io/eduardomercader-commits/tarea-final:eduardo-mercader || true'
+            sh 'docker rmi -f ghcr.io/emercade/tarea-final:3.0.0 || true'
+            sh 'docker rmi -f ghcr.io/emercade/tarea-final:eduardo-mercader || true'
+            sh 'docker rmi -f tarea-final:latest || true'
+            sh 'docker rmi -f tarea-final:eduardo-mercader || true'
 //            sh 'docker tag ${IMAGE}'
 //            sh 'docker rmi -f ${TAG} || true'
         }
@@ -24,9 +32,9 @@ def tagAndPush(String localImage, String repo, String user, String registry, Str
             sh 'docker tag ${IMAGE} || true'
             sh 'docker rmi -f ${TAG} || true'
         }
-*/
         imagen.push("${BUILD_NUMBER}")
         imagen.push("${APP_SEMANTIC_VERSION}")
+*/
     }
 }
 
