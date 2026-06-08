@@ -55,7 +55,7 @@ pipeline {
                     script{
                         withCredentials([string(credentialsId: 'dh-credencial', variable: 'CR_PAT')]) {
                             sh 'echo $CR_PAT | docker login -u emercade --password-stdin'
-                            sh 'git config --global --add safe.directory *'
+                            sh 'git config --global --add safe.directory "*"'
                             sh 'docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} .'
                         }
                     }
