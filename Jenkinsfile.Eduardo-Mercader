@@ -67,7 +67,7 @@ pipeline {
                 }
             }
         }
-        stage('push'){
+        stage('deploy'){
             steps {
                 container('kubectl'){
                     script{
