@@ -45,7 +45,6 @@ pipeline {
         stage('build'){
             steps {
                 container('docker'){
-                    sh 'service docker start'
                     sh 'docker build -t env.IMAGE_NAME .'
                 }
             }
