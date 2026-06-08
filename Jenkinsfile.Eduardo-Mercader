@@ -44,7 +44,7 @@ pipeline {
         }
         stage('build'){
             steps {
-                container('buildkit'){
+                container('herramientas'){
                     sh 'docker build -t env.IMAGE_NAME .'
                 }
             }
