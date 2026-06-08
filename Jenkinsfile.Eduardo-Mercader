@@ -19,7 +19,7 @@ def tagAndPush(String localImage, String repo, String registry, String credentia
 pipeline {
     agent {
         kubernetes {
-            defaultContainer 'herramientas'
+            defaultContainer 'debian-container'
             yamlFile 'agent-node.yaml'
         }
     }
@@ -66,8 +66,12 @@ pipeline {
             steps {
                 container('docker'){
                     script{
-                        tagAndPush("${IMAGE_NAME}:${BUILD_NUMBER}", ${DH_REPO}, 'https://index.docker.io/v1/','dh-credencial' )
-                        tagAndPush("${IMAGE_NAME}:${BUILD_NUMBER}", ${GH_REPO}, 'https://ghcr.io','gh-credencial' )
+                        withCredentials([string(credentialsId: 'dh-credencial', variable: 'CR_PAT')]) {
+                            tagAndPush("${IMAGE_NAME}:${BUILD_NUMBER}", ${DH_REPO}, 'https://index.docker.io/v1/',$CR_PAT)
+                        }
+                        withCredentials([string(credentialsId: 'gh-credencial', variable: 'CR_TOKEN')]) {
+                            tagAndPush("${IMAGE_NAME}:${BUILD_NUMBER}", ${GH_REPO}, 'https://ghcr.io',$CR_TOKEN)
+                        }
                     }
                 }
             }
