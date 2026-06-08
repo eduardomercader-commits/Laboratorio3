@@ -4,10 +4,11 @@ def tagAndPush(String localImage, String user, String repo, String registry, Str
         def imagen = docker.image("${localImage}")
 //        imagen.tag("${BUILD_NUMBER}")
 //        imagen.tag("${APP_SEMANTIC_VERSION}")
-        withEnv(["TAG=:${BUILD_NUMBER}", "IMAGE=${repo}/${user}/${IMAGE_NAME}:${BUILD_NUMBER}"]) {
+        withEnv(["TAG=:${BUILD_NUMBER}", "IMAGE=${repo}/${IMAGE_NAME}:${BUILD_NUMBER}"]) {
             sh 'echo tag ${TAG}'
             sh 'echo image ${IMAGE}'
             sh 'docker image ls'
+/*
             sh 'docker rmi -f emercade/tarea-final:3.0.0 || true'
             sh 'docker rmi -f emercade/tarea-final:eduardo-mercader || true'
             sh 'docker rmi -f ghcr.io/eduardomercader-commits/tarea-final:3.0.0 || true'
@@ -16,8 +17,15 @@ def tagAndPush(String localImage, String user, String repo, String registry, Str
             sh 'docker rmi -f ghcr.io/emercade/tarea-final:eduardo-mercader || true'
             sh 'docker rmi -f tarea-final:latest || true'
             sh 'docker rmi -f tarea-final:eduardo-mercader || true'
-//            sh 'docker tag ${IMAGE}'
+*/
+            sh 'docker tag ${IMAGE}'
+            sh 'docker push ${IMAGE}'
 //            sh 'docker rmi -f ${TAG} || true'
+        }
+        withEnv(["IMAGE=${repo}/${IMAGE_NAME}:${APP_SEMANTIC_VERSION}"]) {
+            sh 'echo image ${IMAGE}'
+            sh 'docker tag ${IMAGE}'
+            sh 'docker push ${IMAGE}'
         }
 /*
         withEnv(["TAG=:${BUILD_NUMBER}", "IMAGE=${repo}/${user}/${IMAGE_NAME}:${BUILD_NUMBER}"]) {
