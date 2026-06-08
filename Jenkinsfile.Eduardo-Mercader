@@ -1,18 +1,10 @@
 def tagAndPush(String localImage, String repo, String registry, String credential){
     docker.withRegistry(registry, credential){
-        echo "docker tag ${localImage} ${repo}"
-        sh "docker tag ${localImage} ${repo}"
-        echo "docker tag ${localImage} ${repo}:${BUILD_NUMBER}"
-        sh "docker tag ${localImage} ${repo}:${BUILD_NUMBER}"
-        echo "docker tag ${localImage} ${repo}:${BUILD_NUMBER}"
-        sh "docker tag ${localImage} ${repo}:${APP_SEMANTIC_VERSION}"
-        echo "docker tag ${localImage} ${repo}:${APP_SEMANTIC_VERSION}"
-        sh "docker push ${repo}"
-        echo "docker push ${repo}"
-        sh "docker push ${repo}:${BUILD_NUMBER}"
-        echo "docker push ${repo}:${BUILD_NUMBER}"
-        sh "docker push ${repo}:${APP_SEMANTIC_VERSION}"
-        echo "docker push ${repo}:${APP_SEMANTIC_VERSION}"
+        def imagen = docker.image('${localImage}')
+        imagen.tag("${repo}:${BUILD_NUMBER}")
+        imagen.tag("${repo}:${APP_SEMANTIC_VERSION}")
+        imagen.push("${repo}:${BUILD_NUMBER}")
+        imagen.push("${repo}:${APP_SEMANTIC_VERSION}")
     }
 }
 
@@ -66,12 +58,8 @@ pipeline {
             steps {
                 container('docker'){
                     script{
-                        withCredentials([string(credentialsId: 'dh-credencial', variable: 'CR_PAT')]) {
-                            tagAndPush("${IMAGE_NAME}:${BUILD_NUMBER}", ${DH_REPO}, 'https://index.docker.io/v1/',$CR_PAT)
-                        }
-                        withCredentials([string(credentialsId: 'gh-credencial', variable: 'CR_TOKEN')]) {
-                            tagAndPush("${IMAGE_NAME}:${BUILD_NUMBER}", ${GH_REPO}, 'https://ghcr.io',$CR_TOKEN)
-                        }
+                        tagAndPush("${IMAGE_NAME}:${BUILD_NUMBER}", ${DH_REPO}, 'https://index.docker.io/v1/','dh-credencial')
+                        tagAndPush("${IMAGE_NAME}:${BUILD_NUMBER}", ${GH_REPO}, 'https://ghcr.io','gh-credencial')
                     }
                 }
             }
