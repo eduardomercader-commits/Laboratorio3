@@ -1,8 +1,7 @@
 def tagAndPush(String localImage, String repo, String user, String registry, String credential){
     docker.withRegistry(registry, credential){
         echo "repo: ${repo} - ${localImage}"
-//        def imagen = docker.image("${localImage}:")
-        def imagen = docker.image("${localImage}:")
+//        def imagen = docker.image("${localImage}")
 //        imagen.tag("${BUILD_NUMBER}")
 //        imagen.tag("${APP_SEMANTIC_VERSION}")
         withEnv(["TAG=:${BUILD_NUMBER}", "IMAGE=${repo}/${user}/${IMAGE_NAME}:${BUILD_NUMBER}"]) {
