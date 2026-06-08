@@ -23,6 +23,10 @@ pipeline {
         DH_REPO = 'emercade/tarea-final'
         GH_REPO = 'ghcr.io/eduardo-mercader-commits/tarea-final'
         K8S_NAMESPACE = 'ns-eduardo-mercader'
+        DOCKER_TLS_VERIFY="1"
+        DOCKER_HOST="tcp://192.168.49.2:2376"
+        DOCKER_CERT_PATH="/minikube/certs"
+        MINIKUBE_ACTIVE_DOCKERD="minikube"
     }
     stages{
         stage('install'){
