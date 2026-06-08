@@ -28,7 +28,7 @@ pipeline {
         stage('Paso inicial verificacion'){
             steps {
                 sh 'echo "mensaje desde el terminal"'
-                container('pnpm'){
+                container('node'){
                     sh 'node --version'
                     sh 'pnpm --version'
                 }
