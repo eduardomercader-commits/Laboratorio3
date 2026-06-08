@@ -35,6 +35,7 @@ pipeline {
         stage('test'){
             steps {
                 container('pnpm'){
+                    sh 'pnpm install'
                     sh 'pnpm run test'
                     sh 'pnpm run test:e2e'
                     sh 'pnpm run test:cov'
