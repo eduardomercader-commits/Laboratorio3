@@ -1,7 +1,20 @@
 apiVersion: v1
 kind: Pod
+metadata:
+  name: debian-pod
+  labels:
+    app: debian
 spec:
+  hostAliases:
+  - ip: "10.106.121.194"
+    hostnames:
+    - "ingress.local"
   containers:
+    - name: debian-container
+      # Use your exact local image name and tag
+      image: my-debian-image:v1.0
+      # Crucial: Stops Kubernetes from trying to download from Docker Hub
+      imagePullPolicy: Never
     - name: herramientas
       image: alpine:3.23
       command:
