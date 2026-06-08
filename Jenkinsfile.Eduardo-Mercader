@@ -46,7 +46,7 @@ pipeline {
             steps {
                 container('docker'){
                     script{
-                        withCredentials([(credentialsId: 'dh-credencial', variable: 'CR_PAT')]) {
+                        withCredentials([string(credentialsId: 'dh-credencial', variable: 'CR_PAT')]) {
                     sh 'echo $CR_PAT | docker login -u emercade --password-stdin'
                     sh 'docker build -t ${IMAGE_NAME}:${BUID_NUMBER} .'
                 }
