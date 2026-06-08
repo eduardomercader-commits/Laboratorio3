@@ -25,14 +25,6 @@ pipeline {
         K8S_NAMESPACE = 'ns-eduardo-mercader'
     }
     stages{
-#        stage('Paso inicial verificacion'){
-#            steps {
-#                sh 'echo "mensaje desde el terminal"'
-#                container('node'){
-#                    sh 'node --version'
-#                }
-#            }
-#        }
         stage('install'){
             steps {
                 container('pnpm'){
