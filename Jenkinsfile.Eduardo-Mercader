@@ -6,11 +6,11 @@ def tagAndPush(String localImage, String repo, String registry, String credentia
         imagen.tag("${APP_SEMANTIC_VERSION}")
         withEnv(["TAG=${repo}:${BUILD_NUMBER}"]) {
             echo "tag: ${TAG}"
-            sh 'docker rmi -f ${TAG}" || true'
+            sh 'docker rmi -f ${TAG} || true'
         }
         withEnv(["TAG=${repo}:${APP_SEMANTIC_VERSION}"]) {
             echo "tag: ${TAG}"
-            sh 'docker rmi -f "${repo}:${APP_SEMANTIC_VERSION}" || true'
+            sh 'docker rmi -f ${TAG} || true'
         }
         imagen.push("${BUILD_NUMBER}")
         imagen.push("${APP_SEMANTIC_VERSION}")
