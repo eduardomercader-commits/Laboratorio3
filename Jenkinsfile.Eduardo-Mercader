@@ -1,11 +1,18 @@
 def tagAndPush(String localImage, String repo, String registry, String credential){
     docker.withRegistry(registry, credential){
+        echo "docker tag ${localImage} ${repo}"
         sh "docker tag ${localImage} ${repo}"
+        echo "docker tag ${localImage} ${repo}:${BUILD_NUMBER}"
         sh "docker tag ${localImage} ${repo}:${BUILD_NUMBER}"
+        echo "docker tag ${localImage} ${repo}:${BUILD_NUMBER}"
         sh "docker tag ${localImage} ${repo}:${APP_SEMANTIC_VERSION}"
+        echo "docker tag ${localImage} ${repo}:${APP_SEMANTIC_VERSION}"
         sh "docker push ${repo}"
+        echo "docker push ${repo}"
         sh "docker push ${repo}:${BUILD_NUMBER}"
+        echo "docker push ${repo}:${BUILD_NUMBER}"
         sh "docker push ${repo}:${APP_SEMANTIC_VERSION}"
+        echo "docker push ${repo}:${APP_SEMANTIC_VERSION}"
     }
 }
 
@@ -20,7 +27,7 @@ pipeline {
         BUILD_NUMBER = '3.0.0'
         APP_SEMANTIC_VERSION = 'eduardo-mercader'
         IMAGE_NAME = 'emercade/tarea-final'
-        DH_REPO = 'emercade/tarea-final'
+        DH_REPO = 'index.docker.io/emercade/tarea-final'
         GH_REPO = 'ghcr.io/eduardo-mercader-commits/tarea-final'
         K8S_NAMESPACE = 'ns-eduardo-mercader'
     }
@@ -58,8 +65,8 @@ pipeline {
             steps {
                 container('docker'){
                     script{
-                        tagAndPush(${IMAGE_NAME}, ${DH_REPO}, 'https://index.docker.io/v1/','dh-credencial' )
-                        tagAndPush(${IMAGE_NAME}, ${GH_REPO}, 'https://ghcr.io','gh-credencial' )
+                        tagAndPush(${IMAGE_NAME}:${BUILD_NUMBER}, ${DH_REPO}, 'https://index.docker.io/v1/','dh-credencial' )
+                        tagAndPush(${IMAGE_NAME}:${BUILD_NUMBER}, ${GH_REPO}, 'https://ghcr.io','gh-credencial' )
                     }
                 }
             }
