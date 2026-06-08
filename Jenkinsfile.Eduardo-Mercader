@@ -2,7 +2,7 @@ def tagAndPush(String localImage, String repo, String user, String registry, Str
     withCredentials([string(credentialsId: "${credential}", variable: 'CR_PAT')]) {
 //    docker.withRegistry(registry, credential){
         sh 'echo "repo: ${repo} - ${localImage} - ${user}"'
-        withEnv(["LOGIN=${registry} login -u ${user}"]) {
+        withEnv(["LOGIN=login ${registry} -u ${user}"]) {
            sh 'echo "login: ${LOGIN}"'
            sh 'echo ${CR_PAT} | docker ${LOGIN} --password-stdin'
         }
