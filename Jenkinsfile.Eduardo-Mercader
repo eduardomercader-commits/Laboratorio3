@@ -4,7 +4,6 @@ def tagAndPush(String localImage, String repo, String registry, String credentia
         withEnv(["IMAGEN_LOCAL=${IMAGE_NAME}:${BUILD_NUMBER}", "IMAGE=${repo}${IMAGE_NAME}:${BUILD_NUMBER}"]) {
             sh 'docker tag ${IMAGEN_LOCAL} ${IMAGE}'
             sh 'docker push ${IMAGE}'
-//            sh 'docker rmi -f ${TAG} || true'
         }
         withEnv(["IMAGEN_LOCAL=${IMAGE_NAME}:${BUILD_NUMBER}", "IMAGE=${repo}${IMAGE_NAME}:${APP_SEMANTIC_VERSION}"]) {
             sh 'docker tag ${IMAGEN_LOCAL} ${IMAGE}'
@@ -51,7 +50,6 @@ pipeline {
                 container('docker'){
                     script{
                         withCredentials([string(credentialsId: 'dh-credencial', variable: 'CR_PAT')]) {
-//                            sh 'echo $CR_PAT | docker login -u emercade --password-stdin'
                             sh 'git config --global --add safe.directory "*"'
                             sh 'docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} .'
                         }
@@ -63,7 +61,7 @@ pipeline {
             steps {
                 container('docker'){
                     script{
-//                        tagAndPush("${IMAGE_NAME}:${BUILD_NUMBER}", "${DH_REPO}", 'https://index.docker.io/v1','dh-credential')
+                        tagAndPush("${IMAGE_NAME}:${BUILD_NUMBER}", "${DH_REPO}", 'https://index.docker.io/v1','dh-credential')
                         tagAndPush("${IMAGE_NAME}:${BUILD_NUMBER}", "${GH_REPO}", 'https://ghcr.io','gh-credential')
                     }
                 }
