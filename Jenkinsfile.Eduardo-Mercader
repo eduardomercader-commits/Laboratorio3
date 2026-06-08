@@ -73,11 +73,9 @@ pipeline {
             steps {
                 container('kubectl'){
                     script{
-                        withCredentials([file(credentialsId: 'entrega-yaml', variable: 'TEMP_FILE_PATH')]) {
-                        sh 'cp $TEMP_FILE_PATH ./entrega.yaml'
-                        withKubeConfig(credentialsId: 'kubernetes-config'){
-                            sh 'kubectl apply -f entrega.yaml'
-                            }
+                        withCredentials([file(credentialsId: 'entrega-yaml', variable: 'ENTREGA_YAML'), file(credentialsId: 'kubernetes-config', variable: 'KUBECONFIG')]) {
+//                            sh 'cp $TEMP_FILE_PATH ./entrega.yaml'
+                            sh 'kubectl apply -f $ENTREGA_YAML'
                         }
                     }
                 }
