@@ -27,9 +27,9 @@ pipeline {
     environment{
         BUILD_NUMBER = '3.0.0'
         APP_SEMANTIC_VERSION = 'eduardo-mercader'
-        IMAGE_NAME = 'emercade/tarea-final'
-        DH_REPO = 'index.docker.io/v1/emercade/tarea-final'
-        GH_REPO = 'ghcr.io/eduardo-mercader-commits/tarea-final'
+        IMAGE_NAME = 'tarea-final'
+        DH_REPO = 'index.docker.io/v1/emercade/'
+        GH_REPO = 'ghcr.io/eduardo-mercader-commits/'
         K8S_NAMESPACE = 'ns-eduardo-mercader'
     }
     stages{
