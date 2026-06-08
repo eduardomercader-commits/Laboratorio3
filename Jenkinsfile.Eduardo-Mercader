@@ -4,8 +4,8 @@ def tagAndPush(String localImage, String user, String repo, String registry, Str
         def imagen = docker.image("${localImage}")
 //        imagen.tag("${BUILD_NUMBER}")
 //        imagen.tag("${APP_SEMANTIC_VERSION}")
-        withEnv(["TAG=:${BUILD_NUMBER}", "IMAGE=${repo}/${IMAGE_NAME}:${BUILD_NUMBER}"]) {
-            sh 'echo tag ${TAG}'
+        withEnv(["IMAGE_LOCAL=${IMAGEN_NAME}:${BUILD_NUMBER}", "IMAGE=${repo}/${IMAGE_NAME}:${BUILD_NUMBER}"]) {
+            sh 'echo imagen local ${IMAGEN_LOCAL}'
             sh 'echo image ${IMAGE}'
             sh 'docker image ls'
 /*
@@ -18,7 +18,7 @@ def tagAndPush(String localImage, String user, String repo, String registry, Str
             sh 'docker rmi -f tarea-final:latest || true'
             sh 'docker rmi -f tarea-final:eduardo-mercader || true'
 */
-            sh 'docker tag ${IMAGE}'
+            sh 'docker tag ${IMAGEN_LOCAL} ${IMAGE}'
             sh 'docker push ${IMAGE}'
 //            sh 'docker rmi -f ${TAG} || true'
         }
